@@ -56,10 +56,12 @@ public class ProductoServiceImpl implements ProductoService {
     @Transactional
     @Override
     public ProductoDto save(ProductoDto pDto) {
+
         Optional.ofNullable(productoRepository.findByCodigoBarras(pDto.getCodigoBarras()))
                 .ifPresent(producto -> {
                     throw new EntityExistsException("Producto existente en la base de datos");
                 });
+
         Optional.ofNullable(maestraRepository.findByNombreCorto(pDto.getCategoria()))
                 .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada: " + pDto.getCategoria()));
 

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.softfriascorporations.avalonplazafec.entities.maestra.dtos.MaestraDto;
 import org.softfriascorporations.avalonplazafec.entities.maestra.entities.Maestra;
 
 @Data
@@ -15,6 +16,6 @@ public class UsuarioDto {
     private Long id;
     private String userName;
     private String password;
-    private Maestra roleId;
+    private MaestraDto role;
     //private Long empresaId;
 }

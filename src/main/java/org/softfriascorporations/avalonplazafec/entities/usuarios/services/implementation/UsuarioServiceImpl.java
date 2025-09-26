@@ -72,7 +72,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             Usuario uEntity = UsuarioMapper.toEntity(dto);
             uEntity.setHashsalt(PassSecure.generateSalt());
             uEntity.setHashpassword(PassSecure.hashPassword(dto.getPassword(),uEntity.getHashsalt()));
-            uEntity.setMaesRol(maestraService.findById(dto.getRoleId().getId()));
+            uEntity.setMaesRol(maestraService.findByNombreCorto(dto.getRole().getNombreCorto()));
 
             return UsuarioMapper.toDto(usuarioRepositpory.save(uEntity));
         } catch (DataIntegrityViolationException e) {
