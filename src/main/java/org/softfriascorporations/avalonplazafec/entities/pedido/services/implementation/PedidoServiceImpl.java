@@ -58,7 +58,11 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public PedidoDto findById(Long aLong) {
-        return null;
+
+        return PedidoMapper.toDto(pedidoRepository.findById(aLong)
+                .orElseThrow(() -> new EntityNotFoundException("no se ecnuentra el pedido"))
+        );
+
     }
 
     @Override
@@ -86,6 +90,11 @@ public class PedidoServiceImpl implements PedidoService {
         //se inicializa la entidad venta mapeando inicialmente
         Pedido pedido = PedidoMapper.toEntity(pedidoDto);
 
+        Maestra metodoPago = maestraRepository.findById(pedidoDto.getMetodoPago().getId()).orElseThrow(
+                () -> new EntityNotFoundException("metodo de pago no encontrado")
+        );
+
+        pedido.setMetodoPago(metodoPago);
 
         List<DetallePedido> detallePedidos = new ArrayList<>();
 
@@ -93,13 +102,11 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoDto.getDetalles().forEach(detalle -> {
 
 
-                    Optional<Producto> optionalProducto = Optional.ofNullable(
-                            productoRepository.findByCodigoBarras(detalle.getProducto().getCodigoBarras())
-                    );
+                    Producto producto =
+                            productoRepository.findById(detalle.getProducto().getId()).orElseThrow(() ->
+                                    new EntityNotFoundException("Producto no encontrado con código: " + detalle.getProducto().getCodigoBarras())
+                            );
 
-                    Producto producto = optionalProducto.orElseThrow(() ->
-                            new EntityNotFoundException("Producto no encontrado con código: " + detalle.getProducto().getCodigoBarras())
-                    );
 
                     if (producto.getStockDisponible() == null || producto.getStockDisponible() <= 0 || producto.getStockDisponible() < detalle.getCantidad()) {
                         throw new RuntimeException("verificar el stock disponible para las cantidades solicitadas");
@@ -121,10 +128,16 @@ public class PedidoServiceImpl implements PedidoService {
 
         pedido.setDetalles(detallePedidos);
 
-        pedido.setMetodo_de_pago(maestraRepository.findByNombreCorto(pedidoDto.getMetodo_de_pago()));
+        Maestra estadoCarrito = Optional.ofNullable(maestraRepository.findByNombreCorto(pedidoDto.getEstadoPedido().getNombreCorto())
+        ).orElseThrow(() -> new EntityNotFoundException("carrito corrupto"));
 
-        pedido.setEstado(Optional.ofNullable(maestraRepository.findByNombreCorto("PEND"))
-                .orElseThrow(() -> new RuntimeException("no se puede realizar pedido")));
+        if (estadoCarrito.getNombreCorto().equals("CARR")){
+
+            pedido.setEstado(estadoCarrito);
+        }else{
+            pedido.setEstado(Optional.ofNullable(maestraRepository.findByNombreCorto("PEND"))
+                    .orElseThrow(() -> new RuntimeException("no se puede realizar pedido")));
+        }
 
         //retorna el pedido guardada
         Pedido pedidoGuardada  = pedidoRepository.save(pedido);
@@ -133,39 +146,19 @@ public class PedidoServiceImpl implements PedidoService {
 
 //***********************************************
 /**
- * se realizan los mapeos correspondientes a productos, detalles y finalmente venta
+ * se realizan los mapeos correspondientes a productos, detalles y finalmente pedido
  */
 
-        List<DetallesPedidoDto> detallesPedidoDtos = new ArrayList<>();
-
-        pedidoGuardada.getDetalles().forEach(detalle -> {
-
-            DetallesPedidoDto detallePedidoDtos = DetallePedidoMapper.toDto(detalle);
-
-
-            detallePedidoDtos.setProducto(ProductoMapper.toDto(detalle.getProducto()));
-
-            detallesPedidoDtos.add(detallePedidoDtos);});
-
-        PedidoDto pedidoDtoGuardado = PedidoMapper.toDto(pedidoGuardada);
-
-        pedidoDtoGuardado.setDetalles(detallesPedidoDtos);
-
-
-
-        return pedidoDtoGuardado;
+        return PedidoMapper.toDto(pedidoGuardada);
     }
 
     @Override
     public PedidoDto findByCodigo(String codigo) {
-        Pedido p;
-        try {
-             p = pedidoRepository.findByCodigoPedido(UtillConversorTypes.stringToUuid(codigo));
-        }catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Pedido no encontrado");
-        }
-
-
+        Pedido p = pedidoRepository.findByCodigoPedido(UtillConversorTypes.stringToUuid(codigo))
+                .orElseThrow(() -> new EntityNotFoundException("no se ecnuentra el pedido"));
         return PedidoDtoUtilProcessor.ProcessPedidoDto(p);
     }
+
+
+
 }

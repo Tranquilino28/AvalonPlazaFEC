@@ -34,4 +34,9 @@ public class ProductoController {
         productoService.saveAll(productoDto);
         return true;
     }
+
+    @GetMapping("/all")
+    public List<ProductoDto> findAll() {
+        return productoService.findAll();
+    }
 }

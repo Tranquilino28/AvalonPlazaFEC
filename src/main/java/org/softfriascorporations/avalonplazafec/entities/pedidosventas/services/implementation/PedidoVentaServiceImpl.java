@@ -10,7 +10,6 @@ import org.softfriascorporations.avalonplazafec.entities.pedidosventas.services.
 import org.softfriascorporations.avalonplazafec.entities.ventas.dtos.VentaDto;
 import org.softfriascorporations.avalonplazafec.entities.ventas.entities.Venta;
 import org.softfriascorporations.avalonplazafec.entities.ventas.repositories.VentaRepository;
-import org.softfriascorporations.avalonplazafec.entities.ventas.services.interfaces.VentaService;
 import org.softfriascorporations.avalonplazafec.entities.ventas.util.VentaDtoUtilProcessor;
 import org.softfriascorporations.avalonplazafec.util.UtillConversorTypes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,22 +34,21 @@ public class PedidoVentaServiceImpl implements PedidoVentaService {
 
     @Transactional
     @Override
-    public VentaDto facturarPedidoVenta(String codigoPedido, String metodoPago) {
-metodoPago = "NEQ";
+    public VentaDto facturarPedidoVenta(Long pedidoId, Long metodoPagoId) {
 
-        Pedido pedido = Optional.ofNullable(
-                        pedidoRopository.findByCodigoPedido(UtillConversorTypes.stringToUuid(codigoPedido)))
+
+        Pedido pedido = pedidoRopository.findById(pedidoId)
                 .orElseThrow(() -> new EntityNotFoundException("pedido invalido")
                 );
 
-        Maestra metodoPagoVenta = Optional.ofNullable(
-                maestraRepository.findByNombreCorto(metodoPago)).orElseThrow(
+        Maestra metodoPagoVenta = maestraRepository.findById(metodoPagoId).orElseThrow(
                         () -> new EntityNotFoundException("metodo de pago invalido")
         );
 
 
         Venta venta = Venta.builder()
                 .pedido(pedido)
+                .metodoPago(metodoPagoVenta)
                 .build();
 
         List<DetallesVenta> detalleventa = new ArrayList<>();
@@ -68,12 +66,6 @@ metodoPago = "NEQ";
 
         });
 
-
-
-
-
-
-
         Venta ventaGuardada ;
 
 
@@ -81,8 +73,6 @@ metodoPago = "NEQ";
 
             venta.setEstado(maestraRepository.findByNombreCorto("FACT"));
             venta.setDetalles(detalleventa);
-            venta.setMetodo_de_pago(metodoPagoVenta);
-
 
             ventaGuardada = ventaRepository.save(venta);
             pedido.setEstado(maestraRepository.findByNombreCorto("FIN"));

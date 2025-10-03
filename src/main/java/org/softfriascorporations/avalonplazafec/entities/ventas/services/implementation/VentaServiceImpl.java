@@ -80,8 +80,7 @@ public class VentaServiceImpl implements VentaService {
         ventaDto.getDetalles().forEach(detalle -> {
 
 
-                    Producto producto = Optional.ofNullable(
-                            productoRepository.findByCodigoBarras(detalle.getProducto().getCodigoBarras())
+                    Producto producto = productoRepository.findById(detalle.getProducto().getId()
                     ).orElseThrow(() ->
                             new EntityNotFoundException("Producto no encontrado con código: " + detalle.getProducto().getCodigoBarras())
                     );
@@ -106,7 +105,7 @@ public class VentaServiceImpl implements VentaService {
 
         venta.setDetalles(detallesVenta);
 
-        venta.setMetodo_de_pago(maestraRepository.findByNombreCorto(ventaDto.getMetodo_de_pago()));
+        venta.setMetodoPago(maestraRepository.findByNombreCorto(ventaDto.getMetodoPago().getNombreCorto()));
 
         venta.setEstado(
                 Optional.ofNullable(maestraRepository.findByNombreCorto("FACT"))
@@ -168,7 +167,8 @@ public class VentaServiceImpl implements VentaService {
     @Override
     public VentaDto facturarPedidoByCodigo(String codigoPedido) {
 
-        Pedido p = pedidoRopository.findByCodigoPedido(UtillConversorTypes.stringToUuid(codigoPedido));
+        Pedido p = pedidoRopository.findByCodigoPedido(UtillConversorTypes.stringToUuid(codigoPedido))
+                .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado: "));
 
 
         return null;

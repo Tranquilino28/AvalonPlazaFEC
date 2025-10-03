@@ -4,6 +4,6 @@ import org.softfriascorporations.avalonplazafec.entities.ventas.dtos.VentaDto;
 
 public interface PedidoVentaService {
 
-    VentaDto facturarPedidoVenta(String codigoPedido, String metodoPago);
+    VentaDto facturarPedidoVenta(Long codigoPedido, Long metodoPago);
 
 }

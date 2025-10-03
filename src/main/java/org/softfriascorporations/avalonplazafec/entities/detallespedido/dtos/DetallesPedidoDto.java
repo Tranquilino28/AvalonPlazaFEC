@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Builder
 public class DetallesPedidoDto {
 
-
+private Long id;
     private Integer cantidad;
 
     private BigDecimal precioUnitario;

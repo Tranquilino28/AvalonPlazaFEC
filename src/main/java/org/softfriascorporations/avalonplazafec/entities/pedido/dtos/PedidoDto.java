@@ -1,15 +1,12 @@
 package org.softfriascorporations.avalonplazafec.entities.pedido.dtos;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
 import org.softfriascorporations.avalonplazafec.entities.detallespedido.dtos.DetallesPedidoDto;
-import org.softfriascorporations.avalonplazafec.entities.detallespedido.entities.DetallePedido;
+import org.softfriascorporations.avalonplazafec.entities.maestra.dtos.MaestraDto;
 import org.softfriascorporations.avalonplazafec.entities.maestra.entities.Maestra;
 
 import java.math.BigDecimal;
@@ -33,7 +30,9 @@ public class PedidoDto {
 
     private LocalDateTime fechaPedido;
 
-    private String metodo_de_pago;
+    private MaestraDto metodoPago;
+
+    private MaestraDto estadoPedido;
 
     private List<DetallesPedidoDto> detalles = new ArrayList<>();
 

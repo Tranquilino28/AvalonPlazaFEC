@@ -2,6 +2,7 @@ package org.softfriascorporations.avalonplazafec.entities.maestra.services.imple
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.softfriascorporations.avalonplazafec.entities.maestra.dtos.MaestraDto;
 import org.softfriascorporations.avalonplazafec.entities.maestra.entities.Maestra;
 import org.softfriascorporations.avalonplazafec.entities.maestra.repositories.MaestraRepository;
 import org.softfriascorporations.avalonplazafec.entities.maestra.services.interfaces.MaestraService;
@@ -27,7 +28,9 @@ public class MaestraServiceImpl implements MaestraService {
     @Override
     public List<Maestra> findAll() {
 
-        return maestraRepository.findAll();
+
+
+        return Optional.ofNullable(maestraRepository.findAll()).orElseThrow();
     }
 
     @Override

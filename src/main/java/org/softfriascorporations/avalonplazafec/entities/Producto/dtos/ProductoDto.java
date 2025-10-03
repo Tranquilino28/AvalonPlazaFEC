@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.softfriascorporations.avalonplazafec.entities.maestra.dtos.MaestraDto;
 import org.softfriascorporations.avalonplazafec.entities.maestra.entities.Maestra;
 
 import java.math.BigDecimal;
@@ -19,6 +20,8 @@ import java.math.BigDecimal;
 public class ProductoDto {
 
 
+    private Long id;
+
     private String codigoBarras;
 
     private String nombre;
@@ -27,9 +30,9 @@ public class ProductoDto {
 
     private BigDecimal precio;
 
-    private String categoria;
+    private MaestraDto categoria;
 
-    private String medida;
+    private MaestraDto medida;
 
     private Integer stockDisponible;
 

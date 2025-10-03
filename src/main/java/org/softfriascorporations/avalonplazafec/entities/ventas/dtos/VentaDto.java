@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.softfriascorporations.avalonplazafec.entities.detalleventa.dtos.DetallesVentaDto;
-import org.softfriascorporations.avalonplazafec.entities.pedido.dtos.PedidoDto;
+import org.softfriascorporations.avalonplazafec.entities.maestra.dtos.MaestraDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,13 +20,15 @@ import java.util.UUID;
 @Builder
 public class VentaDto {
 
+    private Long id;
+
     private UUID codigoVenta;
 
     private BigDecimal valorTotal;
 
-     private LocalDateTime fechaVenta;
+    private LocalDateTime fechaVenta;
 
-    private String metodo_de_pago;
+    private MaestraDto metodoPago;
 
     private List<DetallesVentaDto> detalles = new ArrayList<>();
 

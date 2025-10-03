@@ -2,17 +2,18 @@ package org.softfriascorporations.avalonplazafec.entities.Producto.mappers;
 
 import org.softfriascorporations.avalonplazafec.entities.Producto.dtos.ProductoDto;
 import org.softfriascorporations.avalonplazafec.entities.Producto.entities.Producto;
+import org.softfriascorporations.avalonplazafec.entities.maestra.mappers.MaestraMapper;
 
 public class ProductoMapper {
 
     public static ProductoDto toDto(Producto producto) {
 
         return ProductoDto.builder()
-                //.id(producto.getId())
+                .id(producto.getId())
                 .nombre(producto.getNombre())
                 .descripcion(producto.getDescripcion())
-                .categoria(producto.getCategoria().getNombreCorto())
-                .medida(producto.getMedida().getNombreCorto())
+                .categoria(MaestraMapper.toDto(producto.getCategoria()))
+                .medida(MaestraMapper.toDto(producto.getMedida()))
                 .precio(producto.getPrecio())
                 .codigoBarras(producto.getCodigoBarras())
                 .stockDisponible(producto.getStockDisponible())

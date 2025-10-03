@@ -49,7 +49,7 @@ public class Venta {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "maes_metodopago")
-    private Maestra metodo_de_pago;
+    private Maestra metodoPago;
 
     @ManyToOne()
     @JoinColumn(name = "maes_estventa", foreignKey = @ForeignKey(name = "fk_venta_estado"))

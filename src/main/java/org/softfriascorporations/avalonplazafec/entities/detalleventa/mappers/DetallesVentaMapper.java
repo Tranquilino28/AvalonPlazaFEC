@@ -1,23 +1,38 @@
 package org.softfriascorporations.avalonplazafec.entities.detalleventa.mappers;
 
+import org.softfriascorporations.avalonplazafec.entities.Producto.dtos.ProductoDto;
+import org.softfriascorporations.avalonplazafec.entities.Producto.mappers.ProductoMapper;
 import org.softfriascorporations.avalonplazafec.entities.detalleventa.dtos.DetallesVentaDto;
 import org.softfriascorporations.avalonplazafec.entities.detalleventa.entities.DetallesVenta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DetallesVentaMapper {
 
-    public  static DetallesVentaDto toDto (DetallesVenta dv){
+    public  static List<DetallesVentaDto> toListDto (List<DetallesVenta> dv){
+
+        List<DetallesVentaDto> detallesVentaListDto = new ArrayList<>();
+
+        dv.forEach( listaDetalles -> detallesVentaListDto.add(toDto(listaDetalles)));
+
+
+        return detallesVentaListDto;
+
+    }
+
+    public static DetallesVentaDto toDto (DetallesVenta dv){
 
         return DetallesVentaDto.builder()
-              //  .id(dv.getId())
+                .id(dv.getId())
                 .cantidad(dv.getCantidad())
                 .precioUnitario(dv.getPrecioUnitario())
                 .subTotal(dv.getSubTotal())
-                //producto se mapea y se asigna desde el servicio
+                .producto(ProductoMapper.toDto(dv.getProducto()))
                 .build();
-
-
     }
+
     public  static DetallesVenta toEntity (DetallesVentaDto dv){
 
         return DetallesVenta.builder()

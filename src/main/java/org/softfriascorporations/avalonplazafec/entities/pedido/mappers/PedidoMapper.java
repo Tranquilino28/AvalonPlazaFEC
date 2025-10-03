@@ -1,18 +1,28 @@
 package org.softfriascorporations.avalonplazafec.entities.pedido.mappers;
 
+import org.softfriascorporations.avalonplazafec.entities.detallespedido.dtos.DetallesPedidoDto;
+import org.softfriascorporations.avalonplazafec.entities.detallespedido.mappers.mappers.DetallePedidoMapper;
+import org.softfriascorporations.avalonplazafec.entities.detalleventa.dtos.DetallesVentaDto;
+import org.softfriascorporations.avalonplazafec.entities.detalleventa.mappers.DetallesVentaMapper;
+import org.softfriascorporations.avalonplazafec.entities.maestra.dtos.MaestraDto;
+import org.softfriascorporations.avalonplazafec.entities.maestra.mappers.MaestraMapper;
 import org.softfriascorporations.avalonplazafec.entities.pedido.dtos.PedidoDto;
 import org.softfriascorporations.avalonplazafec.entities.pedido.entities.Pedido;
 
 public class PedidoMapper {
 
     public static PedidoDto toDto(Pedido pedido) {
+
+
+
         return PedidoDto.builder()
-                //.id(venta.getId())
+                .id(pedido.getId())
                 .codigoPedido(pedido.getCodigoPedido())
                 .valorTotal(pedido.getValorTotal())
                 .fechaPedido(pedido.getFechaPedido())
-                .metodo_de_pago(pedido.getMetodo_de_pago().getNombreLargo())
-                //la lista de detallesventa se mapea y se asigna desde el servicio
+                .metodoPago(MaestraMapper.toDto(pedido.getMetodoPago()))
+                .detalles(DetallePedidoMapper.toListDto(pedido.getDetalles()))
+                .estadoPedido(MaestraMapper.toDto(pedido.getEstado()))
                 .build();
 
     }

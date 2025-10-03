@@ -62,16 +62,13 @@ public class ProductoServiceImpl implements ProductoService {
                     throw new EntityExistsException("Producto existente en la base de datos");
                 });
 
-        Optional.ofNullable(maestraRepository.findByNombreCorto(pDto.getCategoria()))
+        Maestra categoria =   maestraRepository.findById(pDto.getCategoria().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada: " + pDto.getCategoria()));
 
-         Optional.ofNullable(maestraRepository.findByNombreCorto(pDto.getMedida()))
+        Maestra medida =  maestraRepository.findById(pDto.getMedida().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Medida no encontrada: " + pDto.getMedida()));
 
-                Maestra categoria = maestraRepository.findByNombreCorto(pDto.getCategoria());
-                Maestra medida = maestraRepository.findByNombreCorto(pDto.getMedida());
-
-                Producto nuevo = ProductoMapper.toEntity(pDto);
+        Producto nuevo = ProductoMapper.toEntity(pDto);
         nuevo.setCategoria(categoria);
         nuevo.setMedida(medida);
 
@@ -85,6 +82,7 @@ public class ProductoServiceImpl implements ProductoService {
     public Boolean deleteById(Long id) {
 
         productoRepository.deleteById(id);
+
         return true;
     }
 
@@ -103,10 +101,10 @@ public class ProductoServiceImpl implements ProductoService {
     public Boolean ubdateByCodigoBarras(ProductoDto pDto) {
         Producto p = findByCodigoBarras(pDto.getCodigoBarras());
 
-        Maestra categoria = Optional.ofNullable(maestraRepository.findByNombreCorto(pDto.getCategoria()))
+        Maestra categoria = maestraRepository.findById(pDto.getCategoria().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada: " + pDto.getCategoria()));
 
-        Maestra medida = Optional.ofNullable(maestraRepository.findByNombreCorto(pDto.getMedida()))
+        Maestra medida =  maestraRepository.findById(pDto.getMedida().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Medida no encontrada: " + pDto.getMedida()));
 
         p.setCategoria(categoria);
@@ -136,12 +134,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public Boolean saveAll(List<ProductoDto> productos) {
 
-
-           productos.forEach(pDto -> {
-                save(pDto);
-           });
-
-
+           productos.forEach(this::save);
         return true ;
     }
 }

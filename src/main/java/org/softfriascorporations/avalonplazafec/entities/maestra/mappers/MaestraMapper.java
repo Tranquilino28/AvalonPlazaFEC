@@ -7,8 +7,12 @@ public class MaestraMapper {
 
     public static MaestraDto toDto(Maestra m){
 
+        if(m==null){
+            return null;
+        }
+
         return MaestraDto.builder()
-                .id(m.getId())
+                .id(m.getId() != null ? m.getId():null)
                 .nombreLargo(m.getNombreLargo())
                 .nombreCorto(m.getNombreCorto())
                 .build();

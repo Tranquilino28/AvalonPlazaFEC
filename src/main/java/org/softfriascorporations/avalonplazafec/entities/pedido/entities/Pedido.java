@@ -1,7 +1,6 @@
 package org.softfriascorporations.avalonplazafec.entities.pedido.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,14 +8,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
-import org.softfriascorporations.avalonplazafec.entities.Producto.entities.Producto;
 import org.softfriascorporations.avalonplazafec.entities.detallespedido.entities.DetallePedido;
-import org.softfriascorporations.avalonplazafec.entities.detalleventa.entities.DetallesVenta;
 import org.softfriascorporations.avalonplazafec.entities.maestra.entities.Maestra;
-import org.softfriascorporations.avalonplazafec.entities.ventas.entities.Venta;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +51,9 @@ public class Pedido {
         @JoinColumn(name = "pedi_id", nullable = true)
         private Pedido pedido;
     */
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "maes_metodopago",foreignKey = @ForeignKey(name = "fk_pedido_metodopago"))
-    private Maestra metodo_de_pago;
+    private Maestra metodoPago;
 
 /*
     @ManyToOne(optional = false)

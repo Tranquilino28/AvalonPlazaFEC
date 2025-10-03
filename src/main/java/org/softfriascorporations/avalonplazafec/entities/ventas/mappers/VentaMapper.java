@@ -1,5 +1,6 @@
 package org.softfriascorporations.avalonplazafec.entities.ventas.mappers;
 
+import org.softfriascorporations.avalonplazafec.entities.maestra.mappers.MaestraMapper;
 import org.softfriascorporations.avalonplazafec.entities.ventas.dtos.VentaDto;
 import org.softfriascorporations.avalonplazafec.entities.ventas.entities.Venta;
 
@@ -11,7 +12,7 @@ public class VentaMapper {
                 .codigoVenta(venta.getCodigoVenta())
                 .valorTotal(venta.getValorTotal())
                 .fechaVenta(venta.getFechaVenta())
-                .metodo_de_pago(venta.getMetodo_de_pago().getNombreLargo())
+                .metodoPago(MaestraMapper.toDto(venta.getMetodoPago()))
                 //la lista de detallesventa se mapea y se asigna desde el servicio
                 .build();
 
