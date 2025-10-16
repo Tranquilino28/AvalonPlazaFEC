@@ -12,5 +12,18 @@ import java.util.UUID;
 public interface PedidoRopository extends JpaRepository<Pedido, Long> {
 
     Optional<Pedido> findByCodigoPedido(UUID codigo);
+
+    /*@Query(
+            """
+                    SELECT c FROM Pedido c
+                    LEFT JOIN FETCH c.detalles d
+                    LEFT JOIN FETCH d.producto p
+                    LEFT JOIN FETCH p.categoria 
+                    LEFT JOIN FETCH p.medida
+                    WHERE c.estado = :estado
+                    """
+    )
+     */
+
     Optional<Pedido> findByEstado(Maestra estado);
 }

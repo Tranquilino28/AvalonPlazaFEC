@@ -22,10 +22,10 @@ public class Maestra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "maes_nombrelargo", nullable = false)
+    @Column(name = "maes_nombrelargo", nullable = false,unique = true)
     private String nombreLargo;
 
-    @Column(name = "maes_nombrecorto", nullable = false)
+    @Column(name = "maes_nombrecorto", nullable = false,unique = true)
     private String nombreCorto;
 
     @Column(name = "maes_dependencia")

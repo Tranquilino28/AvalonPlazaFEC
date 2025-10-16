@@ -4,9 +4,11 @@ import org.softfriascorporations.avalonplazafec.entities.maestra.entities.Maestr
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface MaestraRepository extends JpaRepository<Maestra, Long> {
 
 
-    Maestra findByNombreCorto(String nombreCorto);
+    Optional<Maestra> findByNombreCorto(String nombreCorto);
 }

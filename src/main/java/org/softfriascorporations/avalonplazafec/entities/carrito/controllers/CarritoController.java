@@ -2,20 +2,16 @@ package org.softfriascorporations.avalonplazafec.entities.carrito.controllers;
 
 import org.softfriascorporations.avalonplazafec.entities.carrito.services.interfaces.CarritoService;
 import org.softfriascorporations.avalonplazafec.entities.detallespedido.dtos.DetallesPedidoDto;
-import org.softfriascorporations.avalonplazafec.entities.maestra.dtos.MaestraDto;
-import org.softfriascorporations.avalonplazafec.entities.maestra.mappers.MaestraMapper;
 import org.softfriascorporations.avalonplazafec.entities.pedido.dtos.PedidoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/carrito")
 public class CarritoController {
+
     @Autowired
     CarritoService carritoService;
-
 
     @PostMapping("/add")
     public PedidoDto addCarrito(@RequestBody DetallesPedidoDto detalle) {

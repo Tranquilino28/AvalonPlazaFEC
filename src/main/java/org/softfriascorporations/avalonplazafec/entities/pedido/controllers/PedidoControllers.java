@@ -19,8 +19,8 @@ public class PedidoControllers {
         return pedidoService.save(pedidoDto);
     }
 
-    @PostMapping("/{id}")
-    public PedidoDto save(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public PedidoDto getPedido(@PathVariable Long id) {
 
         return pedidoService.findById(id);
     }

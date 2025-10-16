@@ -105,10 +105,12 @@ public class VentaServiceImpl implements VentaService {
 
         venta.setDetalles(detallesVenta);
 
-        venta.setMetodoPago(maestraRepository.findByNombreCorto(ventaDto.getMetodoPago().getNombreCorto()));
+        venta.setMetodoPago(maestraRepository.findByNombreCorto(ventaDto.getMetodoPago().getNombreCorto())
+                .orElseThrow(() -> new EntityNotFoundException("recurso no encontrado"))
+        );
 
         venta.setEstado(
-                Optional.ofNullable(maestraRepository.findByNombreCorto("FACT"))
+                maestraRepository.findByNombreCorto("FACT")
                         .orElseThrow(() -> new RuntimeException("no se puede realizar la venta"))
 
         );

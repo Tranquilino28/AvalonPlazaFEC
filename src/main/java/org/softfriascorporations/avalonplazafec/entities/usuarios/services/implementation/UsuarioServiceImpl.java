@@ -2,6 +2,8 @@ package org.softfriascorporations.avalonplazafec.entities.usuarios.services.impl
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.softfriascorporations.avalonplazafec.entities.maestra.entities.Maestra;
+import org.softfriascorporations.avalonplazafec.entities.maestra.repositories.MaestraRepository;
 import org.softfriascorporations.avalonplazafec.entities.maestra.services.interfaces.MaestraService;
 import org.softfriascorporations.avalonplazafec.entities.usuarios.dtos.UsuarioDto;
 import org.softfriascorporations.avalonplazafec.entities.usuarios.entities.Usuario;
@@ -28,7 +30,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepositpory;
 @Autowired
-    MaestraService maestraService;
+    MaestraRepository maestraRepositpory;
+
 
 
     @Override
@@ -65,6 +68,9 @@ public class UsuarioServiceImpl implements UsuarioService {
                throw new EntityExistsException("usuario ya existe");
            }
 
+        Maestra rol = maestraRepositpory.findById(dto.getRole().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
+
         try {
 
 
@@ -72,9 +78,13 @@ public class UsuarioServiceImpl implements UsuarioService {
             Usuario uEntity = UsuarioMapper.toEntity(dto);
             uEntity.setHashsalt(PassSecure.generateSalt());
             uEntity.setHashpassword(PassSecure.hashPassword(dto.getPassword(),uEntity.getHashsalt()));
-            uEntity.setMaesRol(maestraService.findByNombreCorto(dto.getRole().getNombreCorto()));
+
+
+
+            uEntity.setMaesRol(rol);
 
             return UsuarioMapper.toDto(usuarioRepositpory.save(uEntity));
+
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error al guardar usuario: " + e.getRootCause().getMessage());
         } catch (InvalidKeySpecException e) {

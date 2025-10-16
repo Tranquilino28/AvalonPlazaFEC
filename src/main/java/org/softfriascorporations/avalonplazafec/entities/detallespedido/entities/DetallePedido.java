@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.softfriascorporations.avalonplazafec.entities.Producto.entities.Producto;
 import org.softfriascorporations.avalonplazafec.entities.pedido.entities.Pedido;
-import org.softfriascorporations.avalonplazafec.entities.ventas.entities.Venta;
 
 import java.math.BigDecimal;
 

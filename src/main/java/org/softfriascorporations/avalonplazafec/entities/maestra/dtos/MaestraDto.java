@@ -13,5 +13,4 @@ public class MaestraDto {
     private String nombreLargo;
 
     private String nombreCorto;
-
 }

@@ -128,14 +128,14 @@ public class PedidoServiceImpl implements PedidoService {
 
         pedido.setDetalles(detallePedidos);
 
-        Maestra estadoCarrito = Optional.ofNullable(maestraRepository.findByNombreCorto(pedidoDto.getEstadoPedido().getNombreCorto())
-        ).orElseThrow(() -> new EntityNotFoundException("carrito corrupto"));
+        Maestra estadoCarrito = maestraRepository.findByNombreCorto(pedidoDto.getEstadoPedido().getNombreCorto())
+        .orElseThrow(() -> new EntityNotFoundException("carrito corrupto"));
 
         if (estadoCarrito.getNombreCorto().equals("CARR")){
 
             pedido.setEstado(estadoCarrito);
         }else{
-            pedido.setEstado(Optional.ofNullable(maestraRepository.findByNombreCorto("PEND"))
+            pedido.setEstado(maestraRepository.findByNombreCorto("PEND")
                     .orElseThrow(() -> new RuntimeException("no se puede realizar pedido")));
         }
 

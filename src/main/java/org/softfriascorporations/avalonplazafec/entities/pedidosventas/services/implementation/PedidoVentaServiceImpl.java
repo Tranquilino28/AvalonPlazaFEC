@@ -71,11 +71,11 @@ public class PedidoVentaServiceImpl implements PedidoVentaService {
 
         try{
 
-            venta.setEstado(maestraRepository.findByNombreCorto("FACT"));
+            venta.setEstado(maestraRepository.findByNombreCorto("FACT").orElseThrow(() -> new EntityNotFoundException("recurso no encontrado")));
             venta.setDetalles(detalleventa);
 
             ventaGuardada = ventaRepository.save(venta);
-            pedido.setEstado(maestraRepository.findByNombreCorto("FIN"));
+            pedido.setEstado(maestraRepository.findByNombreCorto("FIN").orElseThrow(() -> new EntityNotFoundException("recurso no encontrado")));
 
          }catch (EntityNotFoundException e){
             throw new EntityNotFoundException("No se puede concretar la venta : "+e.getMessage());

@@ -48,7 +48,8 @@ ProductoRepository productoRepository;
     public PedidoDto addCarrito(DetallesPedidoDto detalle) {
         Pedido pedidoEntity = new Pedido();
        try {
-           Maestra estadoCarrito = maestraRepository.findByNombreCorto("CARR");
+           Maestra estadoCarrito = maestraRepository.findByNombreCorto("CARR")
+                   .orElseThrow(() -> new EntityNotFoundException("recurso no encontrado"));
 
            Optional<Pedido> pedido = pedidoRepository.findByEstado(estadoCarrito);
 
@@ -71,15 +72,15 @@ ProductoRepository productoRepository;
                return PedidoMapper.toDto(pedidoEntity);
            } else {
 
+               Producto productoEntity = productoRepository.findById(detalle.getProducto().getId())
+                       .orElseThrow(() -> new EntityNotFoundException("el producto no se encuentra en la base de datos"));
 
-               try {
 
                    List<DetallePedido> detallesPedido = new ArrayList<>();
 
 
                    DetallePedido detalleEntity = DetallePedidoMapper.toEntity(detalle);
 
-                   Producto productoEntity = productoRepository.findByCodigoBarras(detalle.getProducto().getCodigoBarras());
 
                    detalleEntity.setProducto(productoEntity);
 
@@ -100,14 +101,11 @@ ProductoRepository productoRepository;
 
                    return PedidoMapper.toDto(pedidoEntity);
 
-
-               } catch (EntityNotFoundException e) {
-                   throw new EntityNotFoundException("no se puede añadir ele producto al carrrito");
-               }
-
            }
        }catch (RuntimeException e) {
            e.printStackTrace();
+
+
        }
        return null;
     }
@@ -115,7 +113,7 @@ ProductoRepository productoRepository;
 
     @Override
     public Optional<Pedido> searchCarrito() {
-        Maestra maestra = maestraRepository.findByNombreCorto("CARR");
+        Maestra maestra = maestraRepository.findByNombreCorto("CARR").orElseThrow(() -> new EntityNotFoundException("recurso no encontrado"));
 
         return pedidoRepository.findByEstado(maestra);
     }
@@ -165,7 +163,8 @@ ProductoRepository productoRepository;
 
             Maestra estadoPedidoPendiente;
             try {
-                estadoPedidoPendiente = maestraRepository.findByNombreCorto("PEND");
+                estadoPedidoPendiente = maestraRepository.findByNombreCorto("PEND")
+                        .orElseThrow(() -> new EntityNotFoundException("recurso no encontrado"));
             }catch (EntityNotFoundException e) {
                 throw new EntityNotFoundException("no se puede realizar el pedido");
             }

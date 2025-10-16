@@ -80,7 +80,7 @@ return null;
 
     @Override
     public Maestra findByNombreCorto(String nombreCorto) {
-        return Optional.ofNullable(maestraRepository.findByNombreCorto(nombreCorto)).orElseThrow();
+        return maestraRepository.findByNombreCorto(nombreCorto).orElseThrow(() -> new EntityNotFoundException("recurso no encontrado"));
     }
 
 
